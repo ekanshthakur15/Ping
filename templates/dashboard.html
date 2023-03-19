@@ -1,0 +1,51 @@
+{% extends 'base.html'%}
+
+{% block content %}
+<div class="columns is-vcentered" style="
+    display: flex;
+    align-items: start;
+    margin: 10px;
+    justify-content: space-evenly;
+  ">
+<div class="column">
+
+    {% for followed in user.profile.follows.all %}
+    {% for ping in followed.user.pinged.all%}
+    <div class="box">
+        <h2 class="title is-4">{{ping.user.username}}</h2>
+        {{ping.body}}
+        <p class="is-small has-text-grey-light">
+            ({{ping.created_on}})
+        </p>
+    </div>
+    {% endfor%}
+    {% endfor%}
+</div>
+<div class="column is-one-third">
+    <div class="block">
+        <a href="{% url 'profile_list' %}">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+    <div class="block">
+        <a href="{% url 'profile' request.user.profile.id %}">
+            <button class="button is-info is-light is-outlined is-fullwidth">
+                My Profile
+            </button>
+        </a>
+    </div>
+    <div class="block">
+        <div class="block">
+            <h2 class="title is-4">Add a Ping</h2>
+        </div>
+    </div>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="button is-info is-fullwidth is-medium mt-5" type="submit">Ping</button>
+    </form>
+</div>
+
+{% endblock content %}

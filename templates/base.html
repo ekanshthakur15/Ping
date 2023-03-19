@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>Ping</title>
+</head>
+<body><nav class="navbar is-info" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="{% url 'dashboard' %}">
+     <h1 style="font-weight: bolder;">Ping</h1>
+    </a>
+
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="navbar-end">
+    <div class="navbar-item">
+      <form action="{% url 'search'%}" method="get">
+     <div class="field has-addons">
+  <div class="control">
+    <input class="input" type="text" placeholder="Search" name = "searched">
+  </div>
+  <div class="control">
+    <button class="button is-info" type="submit" value="show">Go</button>
+  </div>
+</div>
+      </form>
+    </div>
+    
+  </div>
+  </div>
+  {% else %}
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-info">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+   {% endif %}
+  </div>
+</nav> 
+    <div>
+        {% block content%}
+        {% endblock content %}
+    </div>
+</body>
+</html></html>
