@@ -2,8 +2,7 @@
 
 {% block content%}
 {% if query %}
-    <h1 class="title
-    ">Results</h1>
+    <h1 class="title">Results</h1>
     {% for profile in result %}
      <div class="block">
       <div class="card">
@@ -30,5 +29,9 @@
       </div>
     </div>
     {% endfor%}
+  {% else %}
+  <h1>
+    No matching results found
+  </h1>
 {% endif %}
 {% endblock content %}

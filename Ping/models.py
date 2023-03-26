@@ -32,6 +32,11 @@ class Pings(models.Model):
     )
     body = models.CharField(max_length=250)
     created_on = models.DateTimeField(auto_now_add= True)
+    parent = models.ForeignKey("self", on_delete=models.CASCADE, blank= True, null=True, related_name= 'children')
+    likes = models.ManyToManyField(User, blank=True, null=True, related_name='liked')
+
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self) -> str:
         return (

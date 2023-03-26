@@ -1,0 +1,118 @@
+{% extends 'base.html'%} {% block content%}
+
+<article class="media" style="margin: 15px">
+  <figure class="media-left">
+    <p class="image is-64x64">
+      <img src="https://bulma.io/images/placeholders/128x128.png" />
+    </p>
+  </figure>
+  <div class="media-content">
+    <div class="content">
+      <p>
+        <strong>{{post.user.username}}</strong>
+        <small>@{{post.user.username}}</small>
+        <small><time datetime="2016-01-01">{{post.created_on}}</time></small>
+        <br />
+        {{post.body}}
+      </p>
+    </div>
+    <nav class="level is-mobile">
+      <div class="level-left">
+        <form action="{% url 'ping_liked' post.pk %}" method="post">
+              {% csrf_token %}
+              {% if liked %}
+              <button type = 'submit' class = 'button is-danger'name="ping_id" value = "{{ post.pk }}">
+                <span class="mdi mdi-heart-outline"></span>
+              </button>
+              {% else %}
+              <button type = 'submit' class = 'button'name="ping_id" value = "{{ post.pk }}">
+                <span class="mdi mdi-heart-outline"></span>
+              </button>
+              {% endif %}
+            </form>
+             <p style="margin: 15px;">{{ total_likes}} Likes</p>
+
+            
+        <a class="level-item">
+          <span class="icon is-medium"><i class="fas fa-reply"></i></span>
+        </a>
+        <a class="level-item">
+          <span class="icon is-medium"><i class="fas fa-heart"></i></span>
+        </a>
+      </div>
+    </nav>
+  </div>
+  <!-- Delete Button -->
+
+  <form action="" method="post">
+  <div class="media-right">
+      {% csrf_token %}
+      <button class="delete" type="submit" name="delete"></button>
+    </div>
+  </form>
+  <!-- Delete Button ends -->
+</article>
+<div class=""></div>
+<form action="" method="post">
+  {% csrf_token %}
+  <div class="columns is-vcentered" style="margin: 10px;">
+    <div class="column is-three-quarters">
+      {{form.as_p}}
+    </div>
+    <button class="button is-info" style="width: auto; height: auto;" type="submit">Comment</button>
+  </div>
+
+</form>
+
+
+{% if post.children %}
+<h3 class="title is-3">Comments</h3>
+<ul>
+  {% for comments in post.children.all %}
+
+  <div class="box">
+    <article class="media">
+      <div class="media-content">
+        <div class="content">
+          <strong>{{comments.user.username}}</strong>
+          <small style="margin-right: 2px;">@{{comments.user.username}}</small>
+          <small>{{comments.created_on}}</small>
+          
+          <br />
+          {{comments.body}}
+          </p>
+        </div>
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <form action="{% url 'ping_liked' post.pk %}" method="post">
+              {% csrf_token %}
+              <button type = 'submit' class="" name="post_id" value {{ comments.id}}>Like</button>
+            </form>
+           
+            <a class="level-item" aria-label="reply">
+              <span class="icon is-small">
+                <i class="fas fa-reply" aria-hidden="true"></i>
+              </span>
+            </a>
+            <a class="level-item" aria-label="like">
+              <span class="icon is-small">
+                <i class="fas fa-heart" aria-hidden="true"></i>
+              </span>
+            </a>
+          </div>
+        </nav>
+      </div>
+      <form action="{% url 'ping_detail' post.pk %}" method="post">
+        {% csrf_token%}
+        <div class="media-right">
+          <input type="hidden" name="delete_comment" value="{{comments.id}}">
+          <button class="delete" type="submit"></button>
+        </div>
+      </form>
+    </article>
+  </div>
+
+  {% endfor %}
+</ul>
+{% endif %} 
+{% endblock content %}
